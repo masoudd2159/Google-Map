@@ -35,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (checkPlayServices()) {
+        if (MyMapUtils.checkPlayServices(this)) {
             setContentView(R.layout.activity_maps);
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -65,42 +65,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(myHome));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myHome, 10));
 
-        Address address = gotTOLocation("khomeini shahr");
+        Address address = MyMapUtils.gotTOLocation("khomeini shahr");
         if (address != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 10));
         }
-    }
-
-    private Address gotTOLocation(String searchQuery) {
-        Geocoder geocoder = new Geocoder(this);
-        List<Address> addressList = new ArrayList<>();
-        try {
-            addressList = geocoder.getFromLocationName(searchQuery, 1);
-            if (addressList.size() > 0)
-                return addressList.get(0);
-            else return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int result = googleApiAvailability.isGooglePlayServicesAvailable(this);
-        if (result == ConnectionResult.SUCCESS)
-            return true;
-        else {
-            if (googleApiAvailability.isUserResolvableError(result))    // ایا خطای گوگل سرویس قابل اصلاح هست یا خیر
-                googleApiAvailability.getErrorDialog(this, result, 9000).show();
-            return false;
-        }
-    }
-
-    private boolean checkMapIsReady() {
-        if (mMap == null) {
-            Toast.makeText(this, "Map Is Not Ready Yet!", Toast.LENGTH_SHORT).show();
-            return false;
-        } else return true;
     }
 }

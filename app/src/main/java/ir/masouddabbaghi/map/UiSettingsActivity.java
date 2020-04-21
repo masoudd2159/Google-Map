@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,7 +33,7 @@ public class UiSettingsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (checkPlayServices()) {
+        if (MyMapUtils.checkPlayServices(this)) {
             setContentView(R.layout.activity_ui_settings);
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -94,25 +91,6 @@ public class UiSettingsActivity extends FragmentActivity implements OnMapReadyCa
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         setListeners();
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int result = googleApiAvailability.isGooglePlayServicesAvailable(this);
-        if (result == ConnectionResult.SUCCESS)
-            return true;
-        else {
-            if (googleApiAvailability.isUserResolvableError(result))    // ایا خطای گوگل سرویس قابل اصلاح هست یا خیر
-                googleApiAvailability.getErrorDialog(this, result, 9000).show();
-            return false;
-        }
-    }
-
-    private boolean checkMapIsReady() {
-        if (mMap == null) {
-            Toast.makeText(this, "Map Is Not Ready Yet!", Toast.LENGTH_SHORT).show();
-            return false;
-        } else return true;
     }
 
     @Override

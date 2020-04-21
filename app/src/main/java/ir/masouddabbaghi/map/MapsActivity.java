@@ -2,6 +2,8 @@ package ir.masouddabbaghi.map;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -11,12 +13,24 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private CameraPosition mashhad = new CameraPosition
+            .Builder()
+            .target(new LatLng(36.288014, 59.615502))
+            .zoom(15.5f)
+            .bearing(180)
+            .tilt(50)
+            .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +58,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        mMap.getUiSettings().setScrollGesturesEnabled(false);
-        mMap.getUiSettings().setZoomGesturesEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setRotateGesturesEnabled(false);
-        mMap.getUiSettings().setTiltGesturesEnabled(false);
+        //LatLng myHome = new LatLng(32.709638, 51.517019);       // Latitude + Longitude = LatLng
+        //mMap.addMarker(new MarkerOptions().position(myHome).title("Marker in My Home"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(myHome));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myHome, 10));
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        Address address = gotTOLocation("khomeini shahr");
+        if (address != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 10));
+        }
+    }
+
+    private Address gotTOLocation(String searchQuery) {
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> addressList = new ArrayList<>();
+        try {
+            addressList = geocoder.getFromLocationName(searchQuery, 1);
+            if (addressList.size() > 0)
+                return addressList.get(0);
+            else return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private boolean checkPlayServices() {

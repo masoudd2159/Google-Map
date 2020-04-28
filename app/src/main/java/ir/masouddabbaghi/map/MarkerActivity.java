@@ -2,23 +2,21 @@ package ir.masouddabbaghi.map;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.annotation.SuppressLint;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -26,26 +24,30 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MarkerActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Marker marker;
+    private SeekBar seekBarRotation;
+    private TextView textViewInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (MyMapUtils.checkPlayServices(this)) {
-            setContentView(R.layout.activity_maps);
+            setContentView(R.layout.activity_marker);
+            seekBarRotation = findViewById(R.id.seekBarRotation);
+            textViewInfo = findViewById(R.id.textViewInfo);
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
             if (mapFragment != null) {
                 mapFragment.getMapAsync(this);
             }
         }
     }
+
 
     /**
      * Manipulates the map once available.
@@ -56,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -63,10 +66,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng myHome = new LatLng(32.709638, 51.517019);       // Latitude + Longitude = LatLng
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myHome, 12));
 
+        seekBarRotation.setMax(360);
+        seekBarRotation.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (MyMapUtils.checkMapIsReady(mMap)) {
+                    if (marker != null)
+                        marker.setRotation(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                Geocoder geocoder = new Geocoder(MapsActivity.this);
+                Geocoder geocoder = new Geocoder(MarkerActivity.this);
                 List<Address> addressList = new ArrayList<>();
                 try {
                     addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -110,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String msg = marker.getTitle() + " (" +
                         marker.getPosition().latitude + " , " +
                         marker.getPosition().longitude + ")";
-                Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MarkerActivity.this, msg, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -121,14 +145,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onMarkerDrag(Marker marker) {
-
+                textViewInfo.setText("Latitude : " + marker.getPosition().latitude + "\nLongitude : " + marker.getPosition().longitude);
             }
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-                Geocoder geocoder = new Geocoder(MapsActivity.this);
+                Geocoder geocoder = new Geocoder(MarkerActivity.this);
                 List<Address> addressList = new ArrayList<>();
                 try {
                     addressList = geocoder.getFromLocation(
@@ -150,21 +175,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(MapsActivity.this, "on click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MarkerActivity.this, "on click", Toast.LENGTH_SHORT).show();
             }
         });
 
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
-                Toast.makeText(MapsActivity.this, "on long click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MarkerActivity.this, "on long click", Toast.LENGTH_SHORT).show();
             }
         });
 
         mMap.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
             @Override
             public void onInfoWindowClose(Marker marker) {
-                Toast.makeText(MapsActivity.this, "Info Window Close", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MarkerActivity.this, "Info Window Close", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -19,10 +19,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ui Settings Activity" />
+
     <Button
         android:id="@+id/btn_CameraActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Camera Activity" />
+
+    <Button
+        android:id="@+id/btn_MarkerActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Marker Activity" />
 
 </LinearLayout>

@@ -33,8 +33,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".MarkerActivity"
+            android:label="@string/title_activity_marker"></activity>
+        <activity
             android:name=".CameraActivity"
-            android:label="@string/title_activity_camera"></activity>
+            android:label="@string/title_activity_camera" />
         <activity
             android:name=".UiSettingsActivity"
             android:label="@string/title_activity_ui_settings" />

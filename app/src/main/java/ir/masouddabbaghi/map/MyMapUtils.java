@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.animation.Interpolator;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +45,7 @@ class MyMapUtils {
         } else return true;
     }
 
-      static Address gotTOLocation(String searchQuery) {
+    static Address gotTOLocation(String searchQuery) {
         Geocoder geocoder = new Geocoder(context);
         List<Address> addressList = new ArrayList<>();
         try {
@@ -52,5 +57,25 @@ class MyMapUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+     static void animateMarker(final Marker marker, final long duration, final Interpolator interpolator) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float x = 1 - interpolator.getInterpolation((float) elapsed / duration);
+                Log.i("myMapLog", "X = " + x + "");
+                float t = Math.max(x, 0);
+                marker.setAnchor(0.5f, 1.0f + 2 * t);
+
+                if (t > 0.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
     }
 }

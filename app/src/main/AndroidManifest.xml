@@ -33,8 +33,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".CircleActivity"
+            android:label="@string/title_activity_circle"></activity>
+        <activity
             android:name=".PolygonActivity"
-            android:label="@string/title_activity_polygon"></activity>
+            android:label="@string/title_activity_polygon" />
         <activity
             android:name=".PolylineActivity"
             android:label="@string/title_activity_polyline" />

@@ -48,5 +48,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PolylineActivity.class));
             }
         });
+        findViewById(R.id.btn_PolygonActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PolygonActivity.class));
+            }
+        });
+        findViewById(R.id.btn_CircleActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CircleActivity.class));
+            }
+        });
     }
 }

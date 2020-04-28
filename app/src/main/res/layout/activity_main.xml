@@ -44,4 +44,16 @@
         android:layout_height="wrap_content"
         android:text="Polyline Activity" />
 
+    <Button
+        android:id="@+id/btn_PolygonActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Polygon Activity" />
+
+    <Button
+        android:id="@+id/btn_CircleActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Circle Activity" />
+
 </LinearLayout>

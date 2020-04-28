@@ -14,4 +14,5 @@
     <string name="dashRadioButton">Dash</string>
     <string name="mixedRadioButton">Mixed</string>
     <string name="title_activity_polygon">Map</string>
+    <string name="title_activity_circle">Map</string>
 </resources>

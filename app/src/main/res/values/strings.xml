@@ -4,4 +4,5 @@
     <string name="title_activity_ui_settings">Map</string>
     <string name="title_activity_camera">Map</string>
     <string name="title_activity_marker">Map</string>
+    <string name="title_activity_current_location">Map</string>
 </resources>

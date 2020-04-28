@@ -5,4 +5,13 @@
     <string name="title_activity_camera">Map</string>
     <string name="title_activity_marker">Map</string>
     <string name="title_activity_current_location">Map</string>
+    <string name="title_activity_polyline">Map</string>
+    <string name="hue">HUE</string>
+    <string name="alpha">Alpha</string>
+    <string name="width">Width</string>
+    <string name="defaultRadioButton">Default</string>
+    <string name="dotRadioButton">Dot</string>
+    <string name="dashRadioButton">Dash</string>
+    <string name="mixedRadioButton">Mixed</string>
+    <string name="title_activity_polygon">Map</string>
 </resources>

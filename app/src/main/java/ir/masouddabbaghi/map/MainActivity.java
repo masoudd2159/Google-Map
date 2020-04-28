@@ -42,5 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CurrentLocationActivity.class));
             }
         });
+        findViewById(R.id.btn_PolylineActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PolylineActivity.class));
+            }
+        });
     }
 }

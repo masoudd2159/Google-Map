@@ -38,4 +38,10 @@
         android:layout_height="wrap_content"
         android:text="Current Location Activity" />
 
+    <Button
+        android:id="@+id/btn_PolylineActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Polyline Activity" />
+
 </LinearLayout>
